@@ -1,33 +1,3 @@
-using UnityEngine;
-
-public class Chair : MonoBehaviour
-{
-    [SerializeField] private bool isOccupied;
-    [SerializeField] private Transform mealSpace;
-
-    private GameObject _mealInTable;
-
-    public bool IsOccupied
-    {
-        get => isOccupied;
-        set
-        {
-            //ChairManager.Instance.UpdateFreeChairs();
-            isOccupied = value;
-        }
-    }
-
-    public void LocateInMealSpace(GameObject obj)
-    {
-        _mealInTable = obj;
-        obj.transform.position = mealSpace.position;
-    }
-
-    public void CleanPlace()
-    {
-        if (!_mealInTable) return;
-
-        Destroy(_mealInTable);
-        _mealInTable = null;
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:0fcae8d0165db4354a8aff09b1d1e73f46ac5642a16b27929488fd1926894050
+size 849
