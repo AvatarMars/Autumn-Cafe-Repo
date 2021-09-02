@@ -1,3 +1,3 @@
-The old image effects have been deprecated and moved to the Asset Store: https://www.assetstore.unity3d.com/#!/content/83913
-
-We recommend that you now use the new post-processing stack. You'll find it at https://www.unity3d.com/postprocessing
+version https://git-lfs.github.com/spec/v1
+oid sha256:d83d6cc78dd1feaa21fe65512bc9cb10908b83cd43fe19de91fbe4a7191e4d47
+size 418

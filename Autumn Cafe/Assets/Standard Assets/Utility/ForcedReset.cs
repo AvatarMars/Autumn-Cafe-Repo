@@ -1,20 +1,3 @@
-using System;
-using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using UnityStandardAssets.CrossPlatformInput;
-
-#pragma warning disable 618
-[RequireComponent(typeof (Image))]
-public class ForcedReset : MonoBehaviour
-{
-    private void Update()
-    {
-        // if we have forced a reset ...
-        if (CrossPlatformInputManager.GetButtonDown("ResetObject"))
-        {
-            //... reload the scene
-            SceneManager.LoadScene(SceneManager.GetSceneAt(0).name);
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ac694ad54c487b395192e6b7b6c8d1c4dca4e59c6330cc2a7845a583847432c8
+size 690

@@ -1,17 +1,3 @@
-using System;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-namespace UnityStandardAssets._2D
-{
-    public class Restarter : MonoBehaviour
-    {
-        private void OnTriggerEnter2D(Collider2D other)
-        {
-            if (other.tag == "Player")
-            {
-                SceneManager.LoadScene(SceneManager.GetSceneAt(0).name);
-            }
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:7c5f1752f0a7e4d254610ca2c59671f647295260c0f665737b3b037a5117a897
+size 552
