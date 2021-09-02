@@ -1,13 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public abstract class Interactible : MonoBehaviour
-{
-    public bool interactableWithHeldItem;
-    public GameObject player;
-    public string tooltipText;
-
-    public abstract void interactFunction();
-   
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ca6c6b371e97ded3dbd34c17e0759e3c137fcb5bf8dbf4d9ecad4bb91ce9bb7f
+size 490
