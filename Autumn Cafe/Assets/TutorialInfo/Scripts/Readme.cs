@@ -1,14 +1,3 @@
-﻿using System;
-using UnityEngine;
-
-public class Readme : ScriptableObject {
-	public Texture2D icon;
-	public string title;
-	public Section[] sections;
-	public bool loadedLayout;
-	
-	[Serializable]
-	public class Section {
-		public string heading, text, linkText, url;
-	}
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:2b7720302c05717b089c0b553bce415198aec916ad7e809f9ca99582199921cd
+size 445

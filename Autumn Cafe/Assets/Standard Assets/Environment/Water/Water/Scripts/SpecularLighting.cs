@@ -1,33 +1,3 @@
-using System;
-using UnityEngine;
-
-namespace UnityStandardAssets.Water
-{
-    [RequireComponent(typeof(WaterBase))]
-    [ExecuteInEditMode]
-    public class SpecularLighting : MonoBehaviour
-    {
-        public Transform specularLight;
-        private WaterBase m_WaterBase;
-
-
-        public void Start()
-        {
-            m_WaterBase = (WaterBase)gameObject.GetComponent(typeof(WaterBase));
-        }
-
-
-        public void Update()
-        {
-            if (!m_WaterBase)
-            {
-                m_WaterBase = (WaterBase)gameObject.GetComponent(typeof(WaterBase));
-            }
-
-            if (specularLight && m_WaterBase.sharedMaterial)
-            {
-                m_WaterBase.sharedMaterial.SetVector("_WorldLightDir", specularLight.transform.forward);
-            }
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:656a58d917df69c4c97d59f41f5b7ec0e3f3abd2760f48ac2cfa11b89948f9b8
+size 974

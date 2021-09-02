@@ -1,25 +1,3 @@
-using System;
-using UnityEngine;
-
-namespace UnityStandardAssets.Vehicles.Car
-{
-    public class BrakeLight : MonoBehaviour
-    {
-        public CarController car; // reference to the car controller, must be dragged in inspector
-
-        private Renderer m_Renderer;
-
-
-        private void Start()
-        {
-            m_Renderer = GetComponent<Renderer>();
-        }
-
-
-        private void Update()
-        {
-            // enable the Renderer when the car is braking, disable it otherwise.
-            m_Renderer.enabled = car.BrakeInput > 0f;
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:cba7e5611a7c61f6e0c3305ef10ecfcb8eac594d0122036c427cf8bc6d636df3
+size 737
