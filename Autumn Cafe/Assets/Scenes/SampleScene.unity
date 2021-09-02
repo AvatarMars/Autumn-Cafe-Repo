@@ -2049,7 +2049,7 @@ GameObject:
   - component: {fileID: 857825962}
   - component: {fileID: 857825961}
   - component: {fileID: 857825960}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: cutting Board
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4833,10 +4833,10 @@ MonoBehaviour:
   canPlace:
     serializedVersion: 2
     m_Bits: 1
-  canInteract: 0
+  canInteract: 1
   InteracableMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   dest: {fileID: 607360242}
   pickupDistance: 6
   heldItem: {fileID: 0}
