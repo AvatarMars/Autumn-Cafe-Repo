@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PickUp : MonoBehaviour
+public class PickUpAndInteract : MonoBehaviour
 {
     public Transform cam;
+    public Transform camReturnPosition;
 
     public LayerMask canPickup;
     public LayerMask canPlace;
@@ -41,19 +42,29 @@ public class PickUp : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.E) && !heldItem)
+        if (Input.GetKeyDown(KeyCode.E) && !heldItem && canInteract)
         {
             RaycastHit hit;
-            if (Physics.Raycast(cam.position, cam.forward, out hit, pickupDistance, canPickup))
+            if (Physics.Raycast(cam.position, cam.forward, out hit, pickupDistance, canPickup) && hit.collider.gameObject.GetComponent<CuttingBoard>())
+            {
+                heldItem = hit.collider.gameObject;
+                hit.collider.gameObject.GetComponent<CuttingBoard>().onBoard = null;
+                Grab();
+            }
+            else if (Physics.Raycast(cam.position, cam.forward, out hit, pickupDistance, canPickup) && !hit.collider.gameObject.GetComponent<CuttingBoard>())
             {
                 heldItem = hit.collider.gameObject;
                 Grab();
             }
         }
-        else if (Input.GetKeyDown(KeyCode.E) && heldItem)
+        else if (Input.GetKeyDown(KeyCode.E) && heldItem && canInteract)
         {
             RaycastHit hit;
-            if (Physics.Raycast(cam.position, cam.forward, out hit, pickupDistance, canPlace))
+            if (Physics.Raycast(cam.position, cam.forward, out hit, pickupDistance, canPlace) && hit.collider.gameObject.GetComponent<CuttingBoard>() && heldItem.GetComponent<Cuttable>())
+            {
+                PlaceOnBoard(hit.collider.gameObject.GetComponent<CuttingBoard>());
+            }
+            else if(Physics.Raycast(cam.position, cam.forward, out hit, pickupDistance, canPlace) && !hit.collider.gameObject.GetComponent<CuttingBoard>())
             {
                 Place(hit.point);
             }
@@ -75,6 +86,16 @@ public class PickUp : MonoBehaviour
         heldItem.transform.position = placePos;
         heldItem.GetComponent<Rigidbody>().isKinematic = false;
         heldItem.GetComponent<Collider>().enabled = true;
+        heldItem = null;
+    }
+
+    void PlaceOnBoard(CuttingBoard board)
+    {
+        heldItem.transform.parent = null;
+        heldItem.transform.position = board.cuttingPosition.position;
+        heldItem.transform.rotation = board.cuttingPosition.rotation;
+        heldItem.GetComponent<Collider>().enabled = true;
+        board.onBoard = heldItem;
         heldItem = null;
     }
 }
