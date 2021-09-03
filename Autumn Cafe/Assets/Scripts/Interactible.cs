@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Interactible : MonoBehaviour
 {
     public bool interactableWithHeldItem;
+    public GameObject player;
 
     public abstract void interactFunction();
    
