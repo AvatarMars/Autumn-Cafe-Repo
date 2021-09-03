@@ -13,6 +13,9 @@ public class CustomerSpawner : MonoBehaviour
 
     private Queue<Customer> _waitingCustomers;
     private bool _shouldInstantiate;
+    private Transform _exitPoint;
+
+    public Transform ExitPoint => _exitPoint;
 
     private void Awake()
     {
@@ -23,6 +26,7 @@ public class CustomerSpawner : MonoBehaviour
     void Start()
     {
         _waitingCustomers = new Queue<Customer>();
+        _exitPoint = transform.Find("ExitPoint");
     }
 
     public void InstantiateCustomer()

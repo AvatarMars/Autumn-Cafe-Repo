@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1630513958095405669, guid: 17bd09df54d5eee40acbfad1fd76ef81, type: 3}
+      propertyPath: <MaxTime>k__BackingField
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5624581378616400983, guid: 17bd09df54d5eee40acbfad1fd76ef81, type: 3}
       propertyPath: m_Enabled
       value: 1

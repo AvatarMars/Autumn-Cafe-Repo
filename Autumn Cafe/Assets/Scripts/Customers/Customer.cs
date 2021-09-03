@@ -1,13 +1,17 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Timer))]
 public class Customer : MonoBehaviour
 {
+    // TODO: Implement patience system
     [SerializeField] private string _name = "Bill";
     [SerializeField] private MealType _desiredMeal;
 
     private NavMeshAgent _agent;
+    private Timer _timer;
 
     private Chair _currentChair;
 
@@ -15,6 +19,9 @@ public class Customer : MonoBehaviour
     void Start()
     {
         _agent = GetComponent<NavMeshAgent>();
+        _timer = GetComponent<Timer>();
+        _timer.onTimerTickFinished += OnPatienceDepleted;
+        _timer.StartTimer();
     }
 
     public void CheckForFreeChairs()
@@ -25,23 +32,39 @@ public class Customer : MonoBehaviour
 
         if (chair != null)
         {
-            MoveTowards(chair);
+            StartCoroutine(MoveToChair(chair));
         }
     }
 
-    private void MoveTowards(Chair chair)
+    private void OnPatienceDepleted()
+    {
+        StartCoroutine(MoveToExit());
+    }
+
+    IEnumerator MoveToChair(Chair chair)
     {
         _currentChair = chair;
         _agent.SetDestination(_currentChair.transform.position);
-        //transform.position = _currentChair.transform.position;
         _agent.isStopped = false;
 
-        // TODO: do this logic after some time when the customer reach a chair
+        while (_agent.remainingDistance > .1f)
+        {
+            yield return null;
+        }
+
         _desiredMeal = MealManager.Instance.GetRandomMeal();
+        _timer.StartTimer();
     }
 
-    private void Update()
+    IEnumerator MoveToExit()
     {
-        // Apply logic when agent is near of chair
+        _agent.SetDestination(CustomerSpawner.Instance.ExitPoint.position);
+        _agent.isStopped = false;
+        while (_agent.remainingDistance > 1f)
+        {
+            yield return null;
+        }
+        Debug.Log($"{_name} got tired of waiting and went home");
+        Destroy(gameObject);
     }
 }
