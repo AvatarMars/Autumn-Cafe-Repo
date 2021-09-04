@@ -66,5 +66,6 @@ public class KnifeController : MonoBehaviour
     private void OnDisable()
     {
         knife.transform.localPosition = new Vector3(0.37f,0,0);
+        transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 }

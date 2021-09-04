@@ -48,4 +48,9 @@ public class RadialKnifeController : MonoBehaviour
     {
         
     }
+
+    private void OnDisable()
+    {
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+    }
 }

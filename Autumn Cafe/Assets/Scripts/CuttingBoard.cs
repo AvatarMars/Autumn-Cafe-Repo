@@ -17,6 +17,7 @@ public class CuttingBoard : Interactible
     public override void interactFunction()
     {
         player.GetComponent<PickUpAndInteract>().canInteract = false;
+        player.GetComponent<PickUpAndInteract>().tooltipText.gameObject.SetActive(false);
         player.GetComponent<FirstPersonController>().enabled = false;
         player.GetComponentInChildren<Camera>().gameObject.transform.position = cameraPosition.position;
         player.GetComponentInChildren<Camera>().gameObject.transform.rotation = cameraPosition.rotation;
@@ -43,6 +44,7 @@ public class CuttingBoard : Interactible
     void stopInteracting()
     {
         player.GetComponent<PickUpAndInteract>().canInteract = true;
+        player.GetComponent<PickUpAndInteract>().tooltipText.gameObject.SetActive(true);
         player.GetComponent<FirstPersonController>().enabled = true;
         player.GetComponentInChildren<Camera>().gameObject.transform.position = player.GetComponent<PickUpAndInteract>().camReturnPosition.position;
         player.GetComponentInChildren<Camera>().gameObject.transform.rotation = player.GetComponent<PickUpAndInteract>().camReturnPosition.rotation;
