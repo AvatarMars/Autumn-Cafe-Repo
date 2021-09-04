@@ -1,14 +1,12 @@
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
-    public SceneAsset level1Scene;
-
-    public void LoadLevel1()
+    public void LoadSceneByIndex(int index)
     {
-        SceneManager.LoadScene(level1Scene.name);
+        SceneManager.LoadScene(index);
+        GameManager.Instance.PrepareToPlay();
     }
 
     public void Exit()

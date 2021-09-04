@@ -67,9 +67,11 @@ namespace UnityStandardAssets.Characters.FirstPerson
 
         public void UpdateCursorLock()
         {
+            // This return is here to give us, the Autumn Jam Team, the complete control over the cursor
+            return;
             //if the user set "lockCursor" we check & properly lock the cursos
-            if (lockCursor)
-                InternalLockUpdate();
+            //if (lockCursor)
+            //    InternalLockUpdate();
         }
 
         private void InternalLockUpdate()
