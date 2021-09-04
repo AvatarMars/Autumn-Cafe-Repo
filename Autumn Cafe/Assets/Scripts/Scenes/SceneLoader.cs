@@ -1,20 +1,3 @@
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-public class SceneLoader : MonoBehaviour
-{
-    public void LoadSceneByIndex(int index)
-    {
-        SceneManager.LoadScene(index);
-        GameManager.Instance.PrepareToPlay();
-    }
-
-    public void Exit()
-    {
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#else
-        Application.Quit();
-#endif
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:b5f7efedae3450de0d36aa18af121ad78f7c15dde23a870c5147ca4bf78efb9b
+size 586
