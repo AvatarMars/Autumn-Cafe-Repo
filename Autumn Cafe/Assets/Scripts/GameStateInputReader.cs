@@ -1,34 +1,3 @@
-﻿using System;
-using UnityEngine;
-
-public class GameStateInputReader : MonoBehaviour
-{
-    private GameManager _gameManager;
-
-    private void Start()
-    {
-        _gameManager = GameManager.Instance;
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            ManageState();
-        }
-    }
-
-    private void ManageState()
-    {
-        switch (_gameManager.State)
-        {
-            case GameStateType.Playing:
-            case GameStateType.OnDialogue:
-                _gameManager.PauseGame();
-                break;
-            case GameStateType.Paused:
-                _gameManager.ResumeGame();
-                break;
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:6fd543a71c7af495240f339cd03b20bf58c1e9d3d465273729e9c5c80860358a
+size 879
