@@ -6,9 +6,9 @@ using UnityEngine.AI;
 [RequireComponent(typeof(Timer))]
 public class Customer : MonoBehaviour
 {
-    // TODO: Implement patience system
     [SerializeField] private string _name = "Bill";
     [SerializeField] private MealType _desiredMeal;
+    [SerializeField] private Vector2 _desiredMealSelectionTime;
 
     private NavMeshAgent _agent;
     private Timer _timer;
@@ -52,19 +52,39 @@ public class Customer : MonoBehaviour
             yield return null;
         }
 
+        _timer.StopTimer();
+
+        var secondsToWait = Random.Range(_desiredMealSelectionTime.x, _desiredMealSelectionTime.y);
+        yield return new WaitForSeconds(secondsToWait);
+
         _desiredMeal = MealManager.Instance.GetRandomMeal();
         _timer.StartTimer();
     }
 
     IEnumerator MoveToExit()
     {
+        _timer.StopTimer();
         _agent.SetDestination(CustomerSpawner.Instance.ExitPoint.position);
         _agent.isStopped = false;
         while (_agent.remainingDistance > 1f)
         {
             yield return null;
         }
-        Debug.Log($"{_name} got tired of waiting and went home");
+
+        CustomerSpawner.Instance.RemoveFromSeatedCustomers(this);
         Destroy(gameObject);
     }
+
+    public void GiveMeal(MealType mealType)
+    {
+        if (!CheckMeal(mealType)) return;
+
+        Debug.Log($"{_name} is satisfied with your services");
+
+        // TODO: Put logic here to check meal quality and activate dialogue
+
+        StartCoroutine(MoveToExit());
+    }
+
+    public bool CheckMeal(MealType mealType) => mealType == _desiredMeal;
 }

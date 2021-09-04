@@ -28,7 +28,9 @@ public class MealManager : MonoBehaviour
     public MealType GetRandomMeal()
     {
         var mealTypes = (MealType[])Enum.GetValues(typeof(MealType));
-        var index = Random.Range(0, mealTypes.Length);
+        
+        // Start from 1 to avoid MealType.None
+        var index = Random.Range(1, mealTypes.Length);
         return mealTypes[index];
     }
 }

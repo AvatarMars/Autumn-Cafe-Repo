@@ -19,6 +19,10 @@ PrefabInstance:
       propertyPath: _name
       value: John
       objectReference: {fileID: 0}
+    - target: {fileID: 6941768998019363868, guid: 17bd09df54d5eee40acbfad1fd76ef81, type: 3}
+      propertyPath: _desiredMealSelectionTime.x
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7382467444816598052, guid: 17bd09df54d5eee40acbfad1fd76ef81, type: 3}
       propertyPath: m_Name
       value: Customer (1) Variant

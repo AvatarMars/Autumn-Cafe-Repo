@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CustomerSpawner : MonoBehaviour
@@ -12,6 +13,7 @@ public class CustomerSpawner : MonoBehaviour
     [SerializeField] private int _maxCustomersInQueue = 3;
 
     private Queue<Customer> _waitingCustomers;
+    private List<Customer> _seatedCustomers;
     private bool _shouldInstantiate;
     private Transform _exitPoint;
 
@@ -26,6 +28,7 @@ public class CustomerSpawner : MonoBehaviour
     void Start()
     {
         _waitingCustomers = new Queue<Customer>();
+        _seatedCustomers = new List<Customer>();
         _exitPoint = transform.Find("ExitPoint");
     }
 
@@ -80,11 +83,29 @@ public class CustomerSpawner : MonoBehaviour
         {
             var customer = _waitingCustomers.Dequeue();
             customer.CheckForFreeChairs();
+            _seatedCustomers.Add(customer);
         }
+    }
+
+    public Customer GetFirstSeatedCustomerWithDesiredMeal(MealType meal)
+    {
+        var customer = _seatedCustomers.FirstOrDefault(cust => cust.CheckMeal(meal));
+
+        if (customer != null)
+        {
+            RemoveFromSeatedCustomers(customer);
+        }
+
+        return customer;
     }
 
     private void Update()
     {
         AssignChairToCustomer();
+    }
+
+    public void RemoveFromSeatedCustomers(Customer customer)
+    {
+        if (_seatedCustomers.Contains(customer)) _seatedCustomers.Remove(customer);
     }
 }

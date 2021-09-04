@@ -342,6 +342,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: Bill
   _desiredMeal: 0
+  _desiredMealSelectionTime: {x: 2, y: 5}
 --- !u!195 &5624581378616400983
 NavMeshAgent:
   m_ObjectHideFlags: 0

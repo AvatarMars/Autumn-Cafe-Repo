@@ -35,6 +35,8 @@ public class Timer : MonoBehaviour
         IsRunning = true;
     }
 
+    public void StopTimer() => IsRunning = false;
+
     private void Tick()
     {
         if (!IsRunning) return;
