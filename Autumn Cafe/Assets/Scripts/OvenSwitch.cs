@@ -1,31 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class OvenSwitch : Interactible
-{
-    public GameObject Body;
-    public GameObject Door;
-    public OvenDoor doorScript;
-    public GameObject DoorPivot;
-    public Oven oven;
-
-    public bool on;
-
-    public override void interactFunction()
-    {
-        if (!oven.open)
-        {
-            if (on)
-            {
-                oven.on = false;
-                on = false;
-            }
-            else
-            {
-                oven.on = true;
-                on = true;
-            }
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:4e2138c100671b993d5a0992fb96ee359190da2d62c03f24c83607f71b56c5eb
+size 774
