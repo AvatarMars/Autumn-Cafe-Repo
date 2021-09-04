@@ -11,14 +11,17 @@ public class Initializer : MonoBehaviour
         // Add here any other important object
         var gameManager = TryAddingObject<GameManager>(nameof(GameManager));
 
-        switch (SceneManager.GetActiveScene().name)
+        var activeSceneName = SceneManager.GetActiveScene().name;
+     
+        if (activeSceneName.Contains("Level") || activeSceneName == "SampleScene")
         {
-            case "SampleScene": // TODO: use Level1 for the scene name instead
-                gameManager.SetInitialState(GameStateType.Playing);
-                break;
-            case "MainMenu":
-                gameManager.SetInitialState(GameStateType.MainMenu);
-                break;
+            // TODO: use Level1 for the scene name instead
+            gameManager.SetInitialState(GameStateType.Playing);
+        }
+
+        if (activeSceneName == "MainMenu")
+        {
+            gameManager.SetInitialState(GameStateType.MainMenu);
         }
     }
 
