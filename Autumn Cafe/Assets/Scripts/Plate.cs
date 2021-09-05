@@ -1,22 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class Plate : MonoBehaviour
-{
-    public List<GameObject> onPlate = new List<GameObject>();
-    public string toolTipText;
-
-    public bool canBake;
-
-    public virtual void Update()
-    {
-        foreach(GameObject go in onPlate)
-        {
-            if (go.GetComponent<Bakeable>() && canBake)
-            {
-                go.GetComponent<Bakeable>().bakeAmount = gameObject.GetComponent<Bakeable>().bakeAmount;
-            }
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:5022e3f706d25c376f22a589d9b6ddc126e7976618da1164c3ce6a3c7a68e966
+size 720

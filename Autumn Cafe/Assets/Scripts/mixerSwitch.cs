@@ -1,23 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class mixerSwitch : Interactible
-{
-    public Mixer mixer;
-    public bool on;
-
-    public override void interactFunction()
-    {
-        if (on)
-        {
-            mixer.on = false;
-            on = false;
-        }
-        else
-        {
-            mixer.on = true;
-            on = true;
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:90d650331d238b6c0544c1cd1626e7e7e64bb482842573f70ec9b4d3595a87bb
+size 585
