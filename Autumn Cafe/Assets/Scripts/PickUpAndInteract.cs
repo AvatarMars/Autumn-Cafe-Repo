@@ -195,6 +195,7 @@ public class PickUpAndInteract : MonoBehaviour
         heldItem.transform.position = board.cuttingPosition.position;
         heldItem.transform.rotation = board.cuttingPosition.rotation;
         heldItem.GetComponent<Collider>().enabled = true;
+        heldItem.GetComponent<Rigidbody>().isKinematic = false;
         board.onBoard = heldItem;
         heldItem = null;
     }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.Characters.FirstPerson;
+using UnityEngine.UI;
 
 public class CuttingBoard : Interactible
 {
@@ -11,8 +12,12 @@ public class CuttingBoard : Interactible
     public Transform cuttingPosition;
     public Transform knifeRestingPos;
     public GameObject knife;
+    public GameObject walls;
+    public GameObject canvas;
+    public Image healthBar;
 
     public GameObject onBoard;
+    public float value;
 
     public override void interactFunction()
     {
@@ -26,10 +31,12 @@ public class CuttingBoard : Interactible
         if (onBoard.GetComponent<Cuttable>().radial)
         {
             enableRadialKnife();
+            walls.SetActive(true);
         }
         else
         {
             enableFreeKnife();
+            walls.SetActive(true);
         }
     }
 
@@ -38,6 +45,17 @@ public class CuttingBoard : Interactible
         if (Input.GetKeyDown(KeyCode.F) && isCutting)
         {
             stopInteracting();
+            walls.SetActive(false);
+        }
+
+        if(knife.GetComponent<KnifeController>().enabled && onBoard != null)
+        {
+            canvas.SetActive(true);
+            healthBar.fillAmount = onBoard.GetComponent<Cuttable>().health / onBoard.GetComponent<Cuttable>().maxHealth;
+        }
+        else
+        {
+            canvas.SetActive(false);
         }
     }
 

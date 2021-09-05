@@ -1,19 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Cuttable;
 
 public class KnifeController : MonoBehaviour
 {
-    [System.NonSerialized]
+
     public Transform cuttingItem;
     public GameObject knife;
+    public Transform blade;
 
     public Animator anim;
 
     public LayerMask planeLayer;
 
     bool cutting;
-    bool collidingWithBoard;
 
     private void OnEnable()
     {
@@ -48,24 +49,46 @@ public class KnifeController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Cut();
-            cutting = true;
             anim.SetBool("chopping", true);
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            cutting = false;
             anim.SetBool("chopping", false);
         }
-    }
-
-    void Cut()
-    {
-        
     }
 
     private void OnDisable()
     {
         knife.transform.localPosition = new Vector3(0.37f,0,0);
         transform.rotation = Quaternion.Euler(0, 0, 0);
+    }
+
+    private void Cut()
+    {
+        RaycastHit cutHit;
+        if (Physics.Raycast(blade.position, Vector3.down, out cutHit, 3f))
+        {
+            if (cutHit.collider.GetComponent<Cuttable>())
+            {
+                cutHit.collider.GetComponent<Cuttable>().health--;
+                if (cutHit.collider.GetComponent<Cuttable>().health <= 0)
+                {
+                    foreach (SpawnableEntry s in cutHit.collider.GetComponent<Cuttable>().Spawnables)
+                    {
+                        GameObject Instance = Instantiate(s.spawnable, cutHit.collider.transform.position, Quaternion.Euler(0, s.yRotationOffset + transform.localEulerAngles.y, 0));
+
+                        if(Instance.GetComponent<Cuttable>())
+                        {
+                            transform.root.GetComponent<CuttingBoard>().onBoard = Instance;
+                        }
+                        else
+                        {
+                            transform.root.GetComponent<CuttingBoard>().onBoard = null;
+                        }
+                    }
+                    Destroy(cutHit.collider);
+                }
+            }
+        }
     }
 }
