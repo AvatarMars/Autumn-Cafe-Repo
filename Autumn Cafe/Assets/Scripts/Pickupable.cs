@@ -5,4 +5,5 @@ using UnityEngine;
 public class Pickupable : MonoBehaviour
 {
     public string tooltipText;
+    public bool canBeInspected = true;
 }

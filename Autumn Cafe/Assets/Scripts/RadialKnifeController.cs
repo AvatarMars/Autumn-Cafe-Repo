@@ -62,7 +62,7 @@ public class RadialKnifeController : MonoBehaviour
                     {
                         GameObject Instance = Instantiate(s.spawnable, cutHit.collider.transform.position, Quaternion.Euler(0, s.yRotationOffset + transform.localEulerAngles.y, 0));
                     }
-                    Destroy(cutHit.collider);
+                    Destroy(cutHit.collider.gameObject);
                 }
             }
         }

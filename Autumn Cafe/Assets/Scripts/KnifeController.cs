@@ -86,7 +86,7 @@ public class KnifeController : MonoBehaviour
                             transform.root.GetComponent<CuttingBoard>().onBoard = null;
                         }
                     }
-                    Destroy(cutHit.collider);
+                    Destroy(cutHit.collider.gameObject);
                 }
             }
         }
