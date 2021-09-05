@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,10 +7,13 @@ public class ChairManager : MonoBehaviour
 {
     public static ChairManager Instance;
 
+    public Action onChairEmptyDetected;
+
     [SerializeField] private List<Chair> _availableChairs;
     private List<Chair> _freeChairs;
 
     public bool ExistsFreeChairs => _freeChairs.Count > 0;
+    public int FreeChairCount => _freeChairs.Count;
 
     private void Awake()
     {
@@ -19,6 +23,12 @@ public class ChairManager : MonoBehaviour
     private void Start()
     {
         UpdateFreeChairs();
+    }
+
+    private void Update()
+    {
+        UpdateFreeChairs();
+        if (ExistsFreeChairs) onChairEmptyDetected?.Invoke();
     }
 
     public Chair GetFreeChair()
@@ -33,6 +43,6 @@ public class ChairManager : MonoBehaviour
         return chair;
     }
 
-    private void UpdateFreeChairs() =>
+    public void UpdateFreeChairs() =>
         _freeChairs = _availableChairs.Where(chair => !chair.IsOccupied).ToList();
 }

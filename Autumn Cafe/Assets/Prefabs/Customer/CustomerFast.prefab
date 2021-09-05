@@ -244,7 +244,7 @@ GameObject:
   - component: {fileID: 1630513958095405669}
   - component: {fileID: 5357012002129813587}
   m_Layer: 6
-  m_Name: Customer
+  m_Name: CustomerFast
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -292,7 +292,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 1dc9346815b88a94391a4cdeef53e90a, type: 2}
+  - {fileID: 2100000, guid: e1f99212cf3768b4389d8a89d7e37efe, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -340,9 +340,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf3b9171d3826ae419df27d9baa28c21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: Bill
+  _name: Fasty
   _desiredMeal: 0
-  _desiredMealSelectionTime: {x: 2, y: 5}
+  _desiredMealSelectionTime: {x: 0.5, y: 1.25}
 --- !u!195 &5624581378616400983
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -353,7 +353,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -377,7 +377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c70959a895ad10041b561713da2acf74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <MaxTime>k__BackingField: 5
+  <MaxTime>k__BackingField: 3
   <DefaultTime>k__BackingField: -1
   <CurrentTime>k__BackingField: 0
   <IsTimeInverted>k__BackingField: 1

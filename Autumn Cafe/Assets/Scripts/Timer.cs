@@ -16,10 +16,12 @@ public class Timer : MonoBehaviour
 
     public Action onTimerTickFinished;
 
+    private float _originalMaxTime;
 
     // Start is called before the first frame update
     void Start()
     {
+        _originalMaxTime = MaxTime;
         //StartTimer();
     }
 
@@ -64,4 +66,6 @@ public class Timer : MonoBehaviour
             CurrentTime = DefaultTime >= 0 ? DefaultTime : 0;
         }
     }
+
+    public void ResetMaxTime() => MaxTime = _originalMaxTime;
 }

@@ -2,5 +2,16 @@ using UnityEngine;
 
 public class Chair : MonoBehaviour
 {
-    public bool IsOccupied { get; set; }
+    [SerializeField] private bool isOccupied;
+
+    
+    public bool IsOccupied
+    {
+        get => isOccupied;
+        set
+        {
+            ChairManager.Instance.UpdateFreeChairs();
+            isOccupied = value;
+        }
+    }
 }

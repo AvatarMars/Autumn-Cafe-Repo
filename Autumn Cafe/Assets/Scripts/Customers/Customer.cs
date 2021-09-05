@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Timer))]
@@ -10,24 +12,34 @@ public class Customer : MonoBehaviour
     [SerializeField] private MealType _desiredMeal;
     [SerializeField] private Vector2 _desiredMealSelectionTime;
 
+    public DateTime StoreArrivalTime { get; set; }
+
     private NavMeshAgent _agent;
     private Timer _timer;
 
     private Chair _currentChair;
+    private bool ShouldMoveTowardsTarget =>
+        this != null &&
+        (_agent.pathPending ||
+        _agent.remainingDistance > .1f);
+
+    public bool IsWaiting =>
+        _currentChair == null &&
+        _timer.IsRunning;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _timer = GetComponent<Timer>();
         _timer.onTimerTickFinished += OnPatienceDepleted;
-        _timer.StartTimer();
     }
 
     public void CheckForFreeChairs()
     {
-        if (_currentChair != null) return;
+        if (_currentChair != null || !ChairManager.Instance.ExistsFreeChairs) return;
 
+        _timer.StopTimer();
         var chair = ChairManager.Instance.GetFreeChair();
 
         if (chair != null)
@@ -38,41 +50,83 @@ public class Customer : MonoBehaviour
 
     private void OnPatienceDepleted()
     {
-        StartCoroutine(MoveToExit());
+        MoveToExit();
+    }
+
+    public void MoveTowardsWaitingPoint(Vector3 point, Func<Vector3> waitingPointProvider)
+    {
+        StartCoroutine(MoveTowards(
+            point,
+            afterMoving: () =>
+            {
+                StartCoroutine(MoveTowards(
+                    waitingPointProvider(),
+                    afterMoving: () =>
+                    {
+                        CustomerManager.Instance.AddCustomerToWaitingQueue(this);
+                        _timer.MaxTime *= 2f;
+                        StoreArrivalTime = DateTime.Now;
+                        _timer.StartTimer();
+                    }));
+            }));
+    }
+
+    IEnumerator MoveTowards(
+        Vector3 point,
+        Action beforeMoving = null,
+        Action onMoving = null,
+        Action afterMoving = null)
+    {
+        beforeMoving?.Invoke();
+
+        _agent.SetDestination(point);
+        _agent.isStopped = false;
+        while (ShouldMoveTowardsTarget)
+        {
+            onMoving?.Invoke();
+            yield return null;
+        }
+
+        afterMoving?.Invoke();
     }
 
     IEnumerator MoveToChair(Chair chair)
     {
+        _timer.StopTimer();
+
         _currentChair = chair;
-        _agent.SetDestination(_currentChair.transform.position);
+        var point = _currentChair.transform.position;
+
+        _agent.SetDestination(point);
         _agent.isStopped = false;
 
-        while (_agent.remainingDistance > .1f)
+        while (ShouldMoveTowardsTarget)
         {
             yield return null;
         }
-
-        _timer.StopTimer();
 
         var secondsToWait = Random.Range(_desiredMealSelectionTime.x, _desiredMealSelectionTime.y);
         yield return new WaitForSeconds(secondsToWait);
 
         _desiredMeal = MealManager.Instance.GetRandomMeal();
+        _timer.ResetMaxTime();
         _timer.StartTimer();
     }
 
-    IEnumerator MoveToExit()
+    void MoveToExit()
     {
-        _timer.StopTimer();
-        _agent.SetDestination(CustomerSpawner.Instance.ExitPoint.position);
-        _agent.isStopped = false;
-        while (_agent.remainingDistance > 1f)
-        {
-            yield return null;
-        }
-
-        CustomerSpawner.Instance.RemoveFromSeatedCustomers(this);
-        Destroy(gameObject);
+        StartCoroutine(MoveTowards(
+            CustomerManager.Instance.ExitPoint.position,
+            beforeMoving: () =>
+            {
+                if (_currentChair != null) _currentChair.IsOccupied = false;
+                _timer.StopTimer();
+            },
+            afterMoving: () =>
+            {
+                CustomerManager.Instance.RemoveFromAllLists(this);
+                Destroy(gameObject);
+            }));
     }
 
     public void GiveMeal(MealType mealType)
@@ -83,7 +137,7 @@ public class Customer : MonoBehaviour
 
         // TODO: Put logic here to check meal quality and activate dialogue
 
-        StartCoroutine(MoveToExit());
+        MoveToExit();
     }
 
     public bool CheckMeal(MealType mealType) => mealType == _desiredMeal;
