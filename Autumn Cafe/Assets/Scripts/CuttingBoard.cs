@@ -28,15 +28,18 @@ public class CuttingBoard : Interactible
         player.GetComponentInChildren<Camera>().gameObject.transform.rotation = cameraPosition.rotation;
         isCutting = true;
 
-        if (onBoard.GetComponent<Cuttable>().radial)
+        if (onBoard)
         {
-            enableRadialKnife();
-            walls.SetActive(true);
-        }
-        else
-        {
-            enableFreeKnife();
-            walls.SetActive(true);
+            if (onBoard.GetComponent<Cuttable>().radial)
+            {
+                enableRadialKnife();
+                walls.SetActive(true);
+            }
+            else
+            {
+                enableFreeKnife();
+                walls.SetActive(true);
+            }
         }
     }
 

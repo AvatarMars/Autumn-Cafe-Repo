@@ -7,8 +7,16 @@ public class Plate : MonoBehaviour
     public List<GameObject> onPlate = new List<GameObject>();
     public string toolTipText;
 
-    private void Update()
+    public bool canBake;
+
+    public virtual void Update()
     {
-        
+        foreach(GameObject go in onPlate)
+        {
+            if (go.GetComponent<Bakeable>() && canBake)
+            {
+                go.GetComponent<Bakeable>().bakeAmount = gameObject.GetComponent<Bakeable>().bakeAmount;
+            }
+        }
     }
 }

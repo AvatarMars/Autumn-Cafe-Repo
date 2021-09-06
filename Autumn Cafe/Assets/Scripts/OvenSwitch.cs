@@ -14,15 +14,18 @@ public class OvenSwitch : Interactible
 
     public override void interactFunction()
     {
-        if (on)
+        if (!oven.open)
         {
-            oven.on = false;
-            on = false;
-        }
-        else
-        {
-            oven.on = true;
-            on = true;
+            if (on)
+            {
+                oven.on = false;
+                on = false;
+            }
+            else
+            {
+                oven.on = true;
+                on = true;
+            }
         }
     }
 }
