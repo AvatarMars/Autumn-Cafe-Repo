@@ -1,7 +1,7 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Pickupable))]
 public class Meal : MonoBehaviour
 {
-    public string mealName;
     public MealType mealType;
 }

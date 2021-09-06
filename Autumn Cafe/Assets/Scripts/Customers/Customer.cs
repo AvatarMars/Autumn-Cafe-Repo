@@ -18,6 +18,7 @@ public class Customer : MonoBehaviour
     private Timer _timer;
 
     private Chair _currentChair;
+    
     private bool ShouldMoveTowardsTarget =>
         this != null &&
         (_agent.pathPending ||
@@ -26,6 +27,10 @@ public class Customer : MonoBehaviour
     public bool IsWaiting =>
         _currentChair == null &&
         _timer.IsRunning;
+
+    public bool CanReceiveMeal => _desiredMeal != MealType.None;
+
+    public string Name => _name;
 
     // Start is called before the first frame update
     void Awake()
@@ -108,7 +113,7 @@ public class Customer : MonoBehaviour
         var secondsToWait = Random.Range(_desiredMealSelectionTime.x, _desiredMealSelectionTime.y);
         yield return new WaitForSeconds(secondsToWait);
 
-        _desiredMeal = MealManager.Instance.GetRandomMeal();
+        _desiredMeal = GetRandomMeal();
         _timer.ResetMaxTime();
         _timer.StartTimer();
     }
@@ -129,16 +134,30 @@ public class Customer : MonoBehaviour
             }));
     }
 
-    public void GiveMeal(MealType mealType)
+    private MealType GetRandomMeal()
     {
-        if (!CheckMeal(mealType)) return;
+        var mealTypes = (MealType[])Enum.GetValues(typeof(MealType));
 
-        Debug.Log($"{_name} is satisfied with your services");
-
-        // TODO: Put logic here to check meal quality and activate dialogue
-
-        MoveToExit();
+        // Start from 1 to avoid MealType.None
+        var index = Random.Range(1, mealTypes.Length);
+        var selectedMeal = mealTypes[index];
+        Debug.Log($"Selected meal: {selectedMeal}");
+        return selectedMeal;
     }
 
-    public bool CheckMeal(MealType mealType) => mealType == _desiredMeal;
+    public bool ReceiveMeal(Meal meal)
+    {
+        if (meal.mealType == _desiredMeal)
+        {
+            Debug.Log($"{_name} is satisfied with your services");
+
+            // TODO: Put logic here to check meal quality and activate dialogue
+
+            MoveToExit();
+            return true;
+        }
+
+        Debug.Log($"{_name} didn't asked for {meal.mealType}");
+        return false;
+    }
 }
