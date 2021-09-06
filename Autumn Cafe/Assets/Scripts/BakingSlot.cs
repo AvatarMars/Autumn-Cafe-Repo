@@ -30,7 +30,10 @@ public class BakingSlot : Interactible
             if (occupant)
             {
                 player.GetComponent<PickUpAndInteract>().heldItem = occupant;
-                occupant.GetComponent<Bakeable>().slotOccupying = null;
+                if (occupant.GetComponent<Bakeable>())
+                {
+                    occupant.GetComponent<Bakeable>().slotOccupying = null;
+                }
                 occupant = null;
                 player.GetComponent<PickUpAndInteract>().Grab();
             }

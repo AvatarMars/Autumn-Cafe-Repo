@@ -11,7 +11,9 @@ public class Plate : MonoBehaviour
 
     public virtual void Update()
     {
-        foreach(GameObject go in onPlate)
+        onPlate.RemoveAll(GameObject => GameObject == null);
+
+        foreach (GameObject go in onPlate)
         {
             if (go.GetComponent<Bakeable>() && canBake)
             {

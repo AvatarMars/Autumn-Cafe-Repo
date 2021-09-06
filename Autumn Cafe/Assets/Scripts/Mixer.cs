@@ -27,13 +27,13 @@ public class Mixer : MonoBehaviour
 
     private void Update()
     {
-        if (on)
+        if (on && Bowl)
         {
             Bowl.mixAmount += mixSpeed;
 
             foreach(MixEntry entry in allMixes)
             {
-                if( Bowl.mixAmount == entry.targetMixAmount)
+                if( Bowl.mixAmount == entry.targetMixAmount && Bowl.onPlate.Count == entry.Ingredients.Count)
                 {
                     bool falied = false;
 

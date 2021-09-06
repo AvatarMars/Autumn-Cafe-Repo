@@ -24,7 +24,7 @@ public class Oven : MonoBehaviour
 
             foreach(BakingSlot s in bakingPositions)
             {
-                if(s.occupant != null)
+                if(s.occupant != null && s.occupant.GetComponent<Bakeable>())
                 {
                     s.occupant.GetComponent<Bakeable>().bakeAmount += bakeSpeed;
                 }
