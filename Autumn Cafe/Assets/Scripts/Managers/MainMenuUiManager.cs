@@ -1,19 +1,3 @@
-using UnityEngine;
-
-public class MainMenuUiManager : MonoBehaviour
-{
-    [SerializeField] private GameObject _menuUI;
-    [SerializeField] private GameObject _optionsUI;
-
-    public void GoToOptions()
-    {
-        _menuUI.SetActive(false);
-        _optionsUI.SetActive(true);
-    }
-
-    public void GoToMainMenu()
-    {
-        _menuUI.SetActive(true);
-        _optionsUI.SetActive(false);
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:223161fcc66887c3ca50e9cbdff9bec35705021bf7def1509bf3441c61ff0533
+size 597
