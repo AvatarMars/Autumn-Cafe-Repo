@@ -1,35 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-
-public class CharacterScript : MonoBehaviour
-{
-    public string characterName;
-    public Animator anim;
-    public Image img;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        anim = GetComponent<Animator>();
-    }
-
-    public void PlayAnimation(string _name)
-    {
-        switch (_name)
-        {
-            case "neutral":
-                anim.SetTrigger("toNeutral");
-                break;
-            case "smile":
-                anim.SetTrigger("toSmile");
-                break;
-            case "frown":
-                anim.SetTrigger("toFrown");
-                break;
-        }
-    }
-
-
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:343647d44842144eafd2751a08ab9c92790d453796b9c839800335fc1cb04bfa
+size 929
