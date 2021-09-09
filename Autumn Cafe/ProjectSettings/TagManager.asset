@@ -18,15 +18,14 @@ TagManager:
   - Holdable
   - Interactable
   - Customer
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - PostProcessing
+  - Terra_Vegetation
+  - Terra_Geometry
+  - Player
+  - Target
+  - Weapon
+  - Projectile
+  - PlayerCollisionOnly
   - 
   - 
   - 
