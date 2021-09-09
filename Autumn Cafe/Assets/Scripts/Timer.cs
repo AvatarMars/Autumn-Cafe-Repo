@@ -22,7 +22,6 @@ public class Timer : MonoBehaviour
     void Start()
     {
         _originalMaxTime = MaxTime;
-        //StartTimer();
     }
 
     // Update is called once per frame
@@ -34,10 +33,12 @@ public class Timer : MonoBehaviour
     public void StartTimer()
     {
         ResetTimer();
-        IsRunning = true;
+        ResumeTime();
     }
 
     public void StopTimer() => IsRunning = false;
+
+    public void ResumeTime() => IsRunning = true;
 
     private void Tick()
     {

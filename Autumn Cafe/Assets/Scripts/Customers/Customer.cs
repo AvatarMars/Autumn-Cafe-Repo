@@ -16,9 +16,11 @@ public class Customer : MonoBehaviour
 
     private NavMeshAgent _agent;
     private Timer _timer;
+    private CharacterScript _characterScript;
 
     private Chair _currentChair;
-    
+    private int _originalLayerMask;
+
     private bool ShouldMoveTowardsTarget =>
         this != null &&
         (_agent.pathPending ||
@@ -37,8 +39,16 @@ public class Customer : MonoBehaviour
     {
         _agent = GetComponent<NavMeshAgent>();
         _timer = GetComponent<Timer>();
+        _characterScript = GetComponent<CharacterScript>();
+        if (_characterScript) _characterScript.characterName = _name;
+
         _timer.onTimerTickFinished += OnPatienceDepleted;
+        _originalLayerMask = gameObject.layer;
     }
+
+    private void OnEnable() => GameManager.Instance.onDialogueExit += ResetLayerMask;
+
+    private void OnDisable() => GameManager.Instance.onDialogueExit -= ResetLayerMask;
 
     public void CheckForFreeChairs()
     {
@@ -151,7 +161,8 @@ public class Customer : MonoBehaviour
         {
             Debug.Log($"{_name} is satisfied with your services");
 
-            // TODO: Put logic here to check meal quality and activate dialogue
+            CheckMealQuality();
+            ManageDialog();
 
             MoveToExit();
             return true;
@@ -159,5 +170,28 @@ public class Customer : MonoBehaviour
 
         Debug.Log($"{_name} didn't asked for {meal.mealType}");
         return false;
+    }
+
+    private void CheckMealQuality()
+    {
+        // TODO: implement
+    }
+
+    private void ManageDialog()
+    {
+        if (!_characterScript) return;
+
+        // TODO: Check error when character script is set
+        //DialogueManager.Instance.SetActiveCharacter(_characterScript);
+        gameObject.layer = LayerMask.NameToLayer("DialogueFocus");
+        GameManager.Instance.EnterDialogueMode();
+    }
+
+    private void ResetLayerMask()
+    {
+        if (!_characterScript) return;
+
+        if (DialogueManager.Instance.activeCharacter == _characterScript)
+            gameObject.layer = _originalLayerMask;
     }
 }

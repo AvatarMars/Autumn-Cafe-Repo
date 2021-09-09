@@ -243,6 +243,7 @@ GameObject:
   - component: {fileID: 5624581378616400983}
   - component: {fileID: 1630513958095405669}
   - component: {fileID: 5357012002129813587}
+  - component: {fileID: 4780861609040243197}
   m_Layer: 8
   m_Name: Customer
   m_TagString: Untagged
@@ -397,6 +398,21 @@ MonoBehaviour:
   _patienceImage: {fileID: 6039423640798760759}
   _patienceUi: {fileID: 6938359093765614913}
   _player: {fileID: 0}
+--- !u!114 &4780861609040243197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7382467444816598052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 299a74494c3c3bc40993eba579123d22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterName: 
+  anim: {fileID: 0}
+  img: {fileID: 0}
 --- !u!1 &7521687841742346547
 GameObject:
   m_ObjectHideFlags: 0

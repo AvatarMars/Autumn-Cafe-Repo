@@ -4,14 +4,23 @@ using UnityStandardAssets.Characters.FirstPerson;
 
 public class GameManager : MonoBehaviour
 {
+    /*
+     * TODO:
+     *  - Just display at full color active customer when on dialogue
+     *  - Make sure game flow works, from dialogue to menu, and viceversa
+     *  - Try to define Drag n' Drop prefabs for quick level design iterations
+     */
     public static GameManager Instance;
 
     public Action onPause;
     public Action onResume;
+    public Action onDialogueEnter;
+    public Action onDialogueExit;
 
     [field: SerializeField] public GameStateType State { get; private set; }
 
     private FirstPersonController _fpsController;
+    private GameStateType _lastState;
 
     private void Awake()
     {
@@ -46,15 +55,38 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void EnterDialogueMode()
+    {
+        Debug.Log(onDialogueEnter == null);
+        onDialogueEnter?.Invoke();
+        State = GameStateType.OnDialogue;
+        PrepareToEnterMenu();
+
+        // This will pause the entire game, but animations with Update Mode = Unscaled Time will still reproduce
+        Time.timeScale = 0;
+    }
+
+    public void ExitDialogueMode()
+    {
+        onDialogueExit?.Invoke();
+        State = GameStateType.Playing;
+        PrepareToPlay();
+
+        Time.timeScale = 1;
+    }
+
     public void PauseGame()
     {
-        if (State != GameStateType.Playing) return;
+        if (State != GameStateType.Playing && State != GameStateType.OnDialogue) return;
 
         TryFindScripts();
+
+        _lastState = State;
 
         State = GameStateType.Paused;
         PrepareToEnterMenu();
         onPause?.Invoke();
+        Time.timeScale = 0;
     }
 
     public void ResumeGame()
@@ -63,9 +95,14 @@ public class GameManager : MonoBehaviour
 
         TryFindScripts();
 
-        State = GameStateType.Playing;
-        PrepareToPlay();
+        State = (_lastState == GameStateType.Playing || _lastState == GameStateType.OnDialogue) ? _lastState : GameStateType.Playing;
+        if (State != GameStateType.OnDialogue)
+        {
+            Time.timeScale = 1;
+            PrepareToPlay();
+        }
         onResume?.Invoke();
+
     }
 
     public void PrepareToPlay()

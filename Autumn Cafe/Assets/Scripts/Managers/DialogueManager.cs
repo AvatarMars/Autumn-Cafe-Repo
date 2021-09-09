@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,14 @@ using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
+    public static DialogueManager Instance;
+
+    public PostProcessVolumeTrigger volumeTrigger;
+    public GameObject dialogueCamera;
+    public LayerMask dialogueCameraCullingMask;
+
     public TextAsset inkFile;
+    public GameObject dialogueUIContainer;
     public GameObject textBox;
     public GameObject customButton;
     public GameObject optionPanel;
@@ -23,12 +31,34 @@ public class DialogueManager : MonoBehaviour
     public CharacterScript activeCharacter;
     public CharacterScript[] allCharacters;
     public Transform[] characterPositions;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         story = new Story(inkFile.text);
         tags = new List<string>();
         choiceSelected = null;
+    }
+
+    private void OnEnable()
+    {
+        if (!GameManager.Instance) return;
+
+        GameManager.Instance.onDialogueEnter += EnterDialogueMode;
+        //GameManager.Instance.onDialogueExit += ExitDialogueMode;
+    }
+
+    private void OnDisable()
+    {
+        if (!GameManager.Instance) return;
+
+        GameManager.Instance.onDialogueEnter -= EnterDialogueMode;
+        //GameManager.Instance.onDialogueExit -= ExitDialogueMode;
     }
 
     private void Update()
@@ -41,12 +71,12 @@ public class DialogueManager : MonoBehaviour
                 if (activeCharacter)
                 {
                     nametag.text = activeCharacter.characterName;
-                    activeCharacter.img.color = new Color32(255,255,255, 255);
+                    activeCharacter.img.color = new Color32(255, 255, 255, 255);
                 }
                 else
                 {
                     nametag.text = "";
-                    foreach(CharacterScript chr in allCharacters)
+                    foreach (CharacterScript chr in allCharacters)
                     {
                         chr.img.color = new Color32(100, 100, 100, 255);
                     }
@@ -67,10 +97,28 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    public void SetActiveCharacter(CharacterScript character) => activeCharacter = character;
+
+    private void EnterDialogueMode()
+    {
+        volumeTrigger.ActivateVolume();
+        dialogueUIContainer.SetActive(true);
+        dialogueCamera.SetActive(true);
+    }
+
+    private void ExitDialogueMode()
+    {
+        volumeTrigger.DeactivateVolume();
+        dialogueUIContainer.SetActive(false);
+        dialogueCamera.SetActive(false);
+    }
+
     // Finished the Story (Dialogue)
     private void FinishDialogue()
     {
         Debug.Log("End of Dialogue!");
+        if (GameManager.Instance) GameManager.Instance.ExitDialogueMode();
+        ExitDialogueMode();
     }
 
     // Advance through the story 
@@ -195,11 +243,11 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    void SetPosition(string actor,string position)
+    void SetPosition(string actor, string position)
     {
-        foreach(CharacterScript chr in allCharacters)
+        foreach (CharacterScript chr in allCharacters)
         {
-            if(chr.characterName == actor)
+            if (chr.characterName == actor)
             {
                 chr.transform.position = characterPositions[int.Parse(position)].position;
             }
