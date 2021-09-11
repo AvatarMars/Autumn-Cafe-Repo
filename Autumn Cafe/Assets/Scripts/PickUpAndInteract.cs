@@ -73,10 +73,14 @@ public class PickUpAndInteract : MonoBehaviour
                 RaycastHit raycastHit;
                 if (Physics.Raycast(cam.position, cam.forward, out toolHit, pickupDistance, customerMask))
                 {
-                    if (heldItem.GetComponent<Meal>() && toolHit.collider.GetComponent<Customer>())
+                    var customer = toolHit.collider.GetComponent<Customer>();
+                    if (customer)
                     {
-                        tooltipText.text = $"E: Give {heldItem.GetComponent<Pickupable>().tooltipText} To {toolHit.collider.GetComponent<Customer>().Name}";
-                        tooltipText.color = new Color32(221, 119, 93, 200);
+                        if (heldItem.GetComponent<Meal>())
+                        {
+                            tooltipText.text = $"E: Give {heldItem.GetComponent<Pickupable>().tooltipText} To {customer.Name}";
+                            tooltipText.color = new Color32(221, 119, 93, 200);
+                        }
                     }
                 }
                 else if (Physics.Raycast(cam.position, cam.forward, out raycastHit, pickupDistance, canPickup))
@@ -114,7 +118,16 @@ public class PickUpAndInteract : MonoBehaviour
             else
             {
                 RaycastHit toolHit;
-                if (Physics.Raycast(cam.position, cam.forward, out toolHit, pickupDistance, canPickup))
+                if (Physics.Raycast(cam.position, cam.forward, out toolHit, pickupDistance, customerMask))
+                {
+                    var customer = toolHit.collider.GetComponent<Customer>();
+                    if (customer)
+                    {
+                        tooltipText.text = $"E: Talk To {customer.Name}";
+                        tooltipText.color = new Color32(221, 119, 93, 200);
+                    }
+                }
+                else if (Physics.Raycast(cam.position, cam.forward, out toolHit, pickupDistance, canPickup))
                 {
                     if (toolHit.collider.gameObject.GetComponent<Pickupable>())
                     {
@@ -188,13 +201,17 @@ public class PickUpAndInteract : MonoBehaviour
                 heldItem = hit.collider.gameObject;
                 Grab();
             }
+            else if (Physics.Raycast(cam.position, cam.forward, out hit, pickupDistance, customerMask) && hit.collider.GetComponent<Customer>())
+            {
+                ManageCustomerInteraction(hit.collider.GetComponent<Customer>());
+            }
         }
         else if (Input.GetKeyDown(KeyCode.E) && heldItem && canInteract)
         {
             RaycastHit hit;
             if (Physics.Raycast(cam.position, cam.forward, out hit, pickupDistance, customerMask) && hit.collider.GetComponent<Customer>())
             {
-                GiveToCustomer(hit.collider.GetComponent<Customer>());
+                ManageCustomerInteraction(hit.collider.GetComponent<Customer>());
             }
             else if (Physics.Raycast(cam.position, cam.forward, out hit, pickupDistance, canPickup) && hit.collider.GetComponent<Plate>())
             {
@@ -340,16 +357,23 @@ public class PickUpAndInteract : MonoBehaviour
         heldItem = null;
     }
 
-    void GiveToCustomer(Customer customer)
+    void ManageCustomerInteraction(Customer customer)
     {
-        if (!customer.CanReceiveMeal) return;
+        if (!customer.IsWaitingForFood) return;
 
-        var meal = heldItem.GetComponent<Meal>();
-        if (meal)
+        if (!customer.CanReceiveMeal)
         {
-            customer.ReceiveMeal(meal);
-            Destroy(heldItem);
-            heldItem = null;
+            customer.StartMealSelectionDialogue();
+        }
+        else
+        {
+            var meal = heldItem.GetComponent<Meal>();
+            if (meal)
+            {
+                customer.ReceiveMeal(meal);
+                Destroy(heldItem);
+                heldItem = null;
+            }
         }
     }
 

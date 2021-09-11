@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be3165a390f469e47b9009d63cac03f9, type: 3}
+  m_Name: _Thinking
+  m_EditorClassIdentifier: 
+  mealType: 0
+  mealSprite: {fileID: 21300000, guid: 0687cfc3789fdba46b4cbc12d702e658, type: 3}

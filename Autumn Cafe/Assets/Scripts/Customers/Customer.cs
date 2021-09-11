@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(Timer))]
+[RequireComponent(typeof(CustomerUI))]
 public class Customer : MonoBehaviour
 {
     [SerializeField] private string _name = "Bill";
@@ -17,20 +18,24 @@ public class Customer : MonoBehaviour
     private NavMeshAgent _agent;
     private Timer _timer;
     private CharacterScript _characterScript;
+    private CustomerUI _customerUI;
 
     private Chair _currentChair;
     private int _originalLayerMask;
+    private bool _isMealSelectionDialogue;
 
     private bool ShouldMoveTowardsTarget =>
         this != null &&
         (_agent.pathPending ||
         _agent.remainingDistance > .1f);
 
-    public bool IsWaiting =>
+    public bool IsWaitingInQueue =>
         _currentChair == null &&
         _timer.IsRunning;
 
-    public bool CanReceiveMeal => _desiredMeal != MealType.None;
+    public bool IsWaitingForFood { get; private set; }
+
+    public bool CanReceiveMeal => _desiredMeal != MealType.None && IsWaitingForFood;
 
     public string Name => _name;
 
@@ -40,15 +45,24 @@ public class Customer : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _timer = GetComponent<Timer>();
         _characterScript = GetComponent<CharacterScript>();
+        _customerUI = GetComponent<CustomerUI>();
         if (_characterScript) _characterScript.characterName = _name;
 
         _timer.onTimerTickFinished += OnPatienceDepleted;
         _originalLayerMask = gameObject.layer;
     }
 
-    private void OnEnable() => GameManager.Instance.onDialogueExit += ResetLayerMask;
+    private void OnEnable()
+    {
+        GameManager.Instance.onDialogueExit += ResetLayerMask;
+        GameManager.Instance.onDialogueExit += UpdateDesiredMeal;
+    }
 
-    private void OnDisable() => GameManager.Instance.onDialogueExit -= ResetLayerMask;
+    private void OnDisable()
+    {
+        GameManager.Instance.onDialogueExit -= ResetLayerMask;
+        GameManager.Instance.onDialogueExit -= UpdateDesiredMeal;
+    }
 
     public void CheckForFreeChairs()
     {
@@ -121,11 +135,14 @@ public class Customer : MonoBehaviour
         }
 
         var secondsToWait = Random.Range(_desiredMealSelectionTime.x, _desiredMealSelectionTime.y);
+        _customerUI.UpdateUI(_desiredMeal, false);
         yield return new WaitForSeconds(secondsToWait);
 
-        _desiredMeal = GetRandomMeal();
+        /* AFTER REACHING CHAIR */
+
+        _customerUI.UpdateUI(_desiredMeal, true);
+        IsWaitingForFood = true;
         _timer.ResetMaxTime();
-        _timer.StartTimer();
     }
 
     void MoveToExit()
@@ -136,6 +153,7 @@ public class Customer : MonoBehaviour
             {
                 if (_currentChair != null) _currentChair.IsOccupied = false;
                 _timer.StopTimer();
+                _customerUI.HideUI();
             },
             afterMoving: () =>
             {
@@ -155,6 +173,16 @@ public class Customer : MonoBehaviour
         return selectedMeal;
     }
 
+    private void UpdateDesiredMeal()
+    {
+        if (!_isMealSelectionDialogue) return;
+
+        _desiredMeal = GetRandomMeal();
+        _isMealSelectionDialogue = false;
+        _customerUI.UpdateUI(_desiredMeal, true);
+        _timer.StartTimer();
+    }
+
     public bool ReceiveMeal(Meal meal)
     {
         if (meal.mealType == _desiredMeal)
@@ -170,6 +198,12 @@ public class Customer : MonoBehaviour
 
         Debug.Log($"{_name} didn't asked for {meal.mealType}");
         return false;
+    }
+
+    public void StartMealSelectionDialogue()
+    {
+        ManageDialog();
+        _isMealSelectionDialogue = true;
     }
 
     private void CheckMealQuality()
