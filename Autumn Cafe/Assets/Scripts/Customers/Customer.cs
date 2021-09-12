@@ -185,19 +185,24 @@ public class Customer : MonoBehaviour
 
     public bool ReceiveMeal(Meal meal)
     {
+        var didReceiveMeal = false;
         if (meal.mealType == _desiredMeal)
         {
             Debug.Log($"{_name} is satisfied with your services");
-
+            _currentChair.LocateInMealSpace(meal.gameObject);
             CheckMealQuality();
             ManageDialog();
 
             MoveToExit();
-            return true;
+            didReceiveMeal = true;
         }
+        else
+        {
+            Debug.Log($"{_name} didn't asked for {meal.mealType}");
+        }
+        Destroy(meal.gameObject);
 
-        Debug.Log($"{_name} didn't asked for {meal.mealType}");
-        return false;
+        return didReceiveMeal;
     }
 
     public void StartMealSelectionDialogue()

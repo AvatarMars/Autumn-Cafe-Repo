@@ -361,7 +361,7 @@ public class PickUpAndInteract : MonoBehaviour
     {
         if (!customer.IsWaitingForFood) return;
 
-        if (!customer.CanReceiveMeal)
+        if (!customer.CanReceiveMeal && !heldItem)
         {
             customer.StartMealSelectionDialogue();
         }
@@ -371,7 +371,6 @@ public class PickUpAndInteract : MonoBehaviour
             if (meal)
             {
                 customer.ReceiveMeal(meal);
-                Destroy(heldItem);
                 heldItem = null;
             }
         }
