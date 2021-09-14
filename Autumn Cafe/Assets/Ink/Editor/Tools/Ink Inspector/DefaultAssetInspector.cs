@@ -1,19 +1,3 @@
-using UnityEngine;
-using UnityEditor;
-
-namespace Ink.UnityIntegration {
-	public abstract class DefaultAssetInspector {
-		// Reference to the actual editor we draw to
-		public Editor editor;
-		// Shortcut to the target object
-		public Object target;
-		// Shortcut to the serializedObject
-		public SerializedObject serializedObject;
-
-		public abstract bool IsValid(string assetPath);
-		public virtual void OnEnable () {}
-		public virtual void OnDisable () {}
-		public virtual void OnHeaderGUI () {}
-		public virtual void OnInspectorGUI() {}
-	}
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:2821ba423cd63aa8450e8dbb0060606a30315cc9bb3c3050a2ff7d3df1ba21ff
+size 543
