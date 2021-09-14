@@ -23,6 +23,7 @@ public class GameStateInputReader : MonoBehaviour
         switch (_gameManager.State)
         {
             case GameStateType.Playing:
+            case GameStateType.OnDialogue:
                 _gameManager.PauseGame();
                 break;
             case GameStateType.Paused:

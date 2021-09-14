@@ -1,18 +1,3 @@
-﻿using System.Collections.Generic;
-
-namespace Ink
-{
-    public static class InkStringConversionExtensions
-    {
-        public static string[] ToStringsArray<T>(this List<T> list) {
-            int count = list.Count;
-            var strings = new string[count];
-
-            for(int i = 0; i < count; i++) {
-                strings[i] = list[i].ToString();
-            }
-
-            return strings;
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:ca0f3e2483ada25d9ff1ed4efb30a2d404f80b30b3597154d19bdeeb1233ef2c
+size 421

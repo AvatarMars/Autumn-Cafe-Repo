@@ -164,7 +164,7 @@ public class CustomerManager : MonoBehaviour
     {
         _waitingCustomers = new Queue<Customer>(
             _spawnedCustomers
-                .Where(cust => cust.IsWaiting)
+                .Where(cust => cust.IsWaitingInQueue)
                 .OrderBy(cust => cust.StoreArrivalTime));
     }
 }

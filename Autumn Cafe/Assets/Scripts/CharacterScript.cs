@@ -8,6 +8,7 @@ public class CharacterScript : MonoBehaviour
     public string characterName;
     public Animator anim;
     public Image img;
+
     // Start is called before the first frame update
     void Start()
     {

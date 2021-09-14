@@ -1,24 +1,3 @@
-﻿using System.IO;
-
-namespace Ink
-{
-    public interface IFileHandler
-    {
-        string ResolveInkFilename (string includeName);
-        string LoadInkFileContents (string fullFilename);
-    }
-
-    public class DefaultFileHandler : Ink.IFileHandler {
-        public string ResolveInkFilename (string includeName)
-        {
-            var workingDir = Directory.GetCurrentDirectory ();
-            var fullRootInkPath = Path.Combine (workingDir, includeName);
-            return fullRootInkPath;
-        }
-
-        public string LoadInkFileContents (string fullFilename)
-        {
-        	return File.ReadAllText (fullFilename);
-        }
-    }
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:6074ebce1ac4175cbd4d604d35b8da03c9a2a67e23464dd80dc7b0b1739273a1
+size 652
